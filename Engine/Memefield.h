@@ -1,6 +1,7 @@
 #pragma once
 #include "Vei2.h"
 #include "Graphics.h"
+#include "RectI.h"
 
 class Memefield
 {
@@ -27,6 +28,7 @@ public:
 	Memefield::Tile& TileAt(const Vei2 mapPos);
 	const Memefield::Tile& TileAt(const Vei2 mapPos) const;
 	void DrawMap(const Vei2& startPos, Graphics& gfx ) const;
+	RectI GetRect(const Vei2& startPos) const;
 private:
 	static constexpr int width = 16;
 	static constexpr int height = 20;

@@ -82,9 +82,7 @@ void Memefield::DrawMap(const Vei2 & startPos, Graphics & gfx) const
 {
 	assert(startPos.x >= 0 && startPos.y >= 0);
 
-	gfx.DrawRect(startPos.x, startPos.y, 
-		startPos.x + (width * SpriteCodex::tileSize), startPos.y + (height * SpriteCodex::tileSize),
-			Colors::Gray);
+	gfx.DrawRect(GetRect(startPos), SpriteCodex::baseColor);
 
 	for (Vei2 gridPos = {0, 0}; gridPos.y < height; gridPos.y++)
 	{
@@ -93,4 +91,9 @@ void Memefield::DrawMap(const Vei2 & startPos, Graphics & gfx) const
 			TileAt(gridPos).Draw((gridPos * SpriteCodex::tileSize) + startPos, gfx);
 		}
 	}
+}
+
+RectI Memefield::GetRect(const Vei2& startPos) const
+{
+	return RectI(startPos, width * SpriteCodex::tileSize, height * SpriteCodex::tileSize);
 }

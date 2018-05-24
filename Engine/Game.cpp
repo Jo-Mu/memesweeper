@@ -39,9 +39,13 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	if(wnd.mouse.LeftIsPressed())
+	{
+		memeField.OnRevealClick(wnd.mouse.GetPos());
+	}
 }
 
 void Game::ComposeFrame()
 {
-	memeField.DrawMap(Vei2(265, 140), gfx);
+	memeField.DrawMap(Vei2(0, 0), gfx);
 }

@@ -19,6 +19,8 @@ private:
 		void SpawnMeme();
 		bool HasMeme() const;
 		void Draw(const Vei2& screenPos, Graphics& gfx) const;
+		void Reveal();
+		bool IsRevealed() const;
 	private:
 		State state = State::Hidden;
 		bool hasMeme = false;
@@ -29,8 +31,10 @@ public:
 	const Memefield::Tile& TileAt(const Vei2 mapPos) const;
 	void DrawMap(const Vei2& startPos, Graphics& gfx ) const;
 	RectI GetRect(const Vei2& startPos) const;
+	void OnRevealClick(const Vei2& screenPos);
 private:
 	static constexpr int width = 16;
-	static constexpr int height = 20;
+	static constexpr int height = 16;
 	Tile field[width * height];
+	Vei2 ScreenToGrid(const Vei2& mousePos) const;
 };

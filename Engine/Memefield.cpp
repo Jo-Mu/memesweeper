@@ -45,6 +45,17 @@ void Memefield::Tile::Draw(const Vei2 & screenPos, Graphics & gfx) const
 
 }
 
+void Memefield::Tile::Reveal()
+{
+
+	state = State::Revealed;
+}
+
+bool Memefield::Tile::IsRevealed() const
+{
+	return state == State::Revealed;
+}
+
 Memefield::Memefield(int nMemes)
 {
 	assert(nMemes > 0 && nMemes < width * height);
@@ -96,4 +107,21 @@ void Memefield::DrawMap(const Vei2 & startPos, Graphics & gfx) const
 RectI Memefield::GetRect(const Vei2& startPos) const
 {
 	return RectI(startPos, width * SpriteCodex::tileSize, height * SpriteCodex::tileSize);
+}
+
+void Memefield::OnRevealClick(const Vei2 & screenPos)
+{
+	const Vei2 gridPos = ScreenToGrid(screenPos);
+	assert(gridPos.x >= 0 && gridPos.x < width && gridPos.y >= 0 && gridPos.y < height);
+
+	Tile& tile = TileAt(gridPos);
+	if(!tile.IsRevealed())
+	{
+		tile.Reveal();
+	}
+}
+
+Vei2 Memefield::ScreenToGrid(const Vei2 & mousePos) const
+{
+	return mousePos/SpriteCodex::tileSize;
 }

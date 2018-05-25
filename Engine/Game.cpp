@@ -20,12 +20,13 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include "SpriteCodex.h"
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	memeField(20, Vei2(260,160))
+	memeField(memes, startPos)
 {
 }
 
@@ -64,4 +65,10 @@ void Game::UpdateModel()
 void Game::ComposeFrame()
 {
 	memeField.DrawMap(gfx);
+	if (memeField.IsGameWon()) 
+	{
+		SpriteCodex::DrawVictoryScreen(startPos +
+			Vei2((memeField.GetGridWidth() / 4) * SpriteCodex::tileSize, 
+			(memeField.GetGridHeight() / 4) * SpriteCodex::tileSize), gfx);
+	}
 }

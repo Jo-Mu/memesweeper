@@ -42,8 +42,10 @@ private:
 private:
 	MainWindow& wnd;
 	Graphics gfx;
-	Memefield memeField;
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	int memes = 20;
+	Vei2 startPos = Vei2(260, 160);
+	Memefield memeField;
 };

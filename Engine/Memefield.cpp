@@ -182,12 +182,6 @@ void Memefield::DrawMap(Graphics & gfx) const
 			TileAt(gridPos).Draw((gridPos * SpriteCodex::tileSize) + startPos, isGameOver, gfx);
 		}
 	}
-
-	if(isGameWon)
-	{
-		SpriteCodex::DrawVictoryScreen(startPos + 
-			Vei2((width / 4) * SpriteCodex::tileSize, (height / 4) * SpriteCodex::tileSize), gfx);
-	}
 }
 
 RectI Memefield::GetRect() const
@@ -235,6 +229,21 @@ void Memefield::OnFlagClick(const Vei2 & screenPos)
 			tile.ToggleFlag();
 		}
 	}
+}
+
+bool Memefield::IsGameWon() const
+{
+	return isGameWon;
+}
+
+int Memefield::GetGridWidth() const
+{
+	return width;
+}
+
+int Memefield::GetGridHeight() const
+{
+	return height;
 }
 
 Vei2 Memefield::ScreenToGrid(const Vei2 & mousePos) const

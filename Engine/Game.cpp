@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	memeField(15)
+	memeField(15, Vei2(260,160))
 {
 }
 
@@ -45,7 +45,7 @@ void Game::UpdateModel()
 		if(evnt.GetType() == Mouse::Event::Type::LPress)
 		{
 			const Vei2 mousePos = evnt.GetPos();
-			if (memeField.GetRect(Vei2(0, 0)).Contains(mousePos))
+			if (memeField.GetRect().Contains(mousePos))
 			{
 				memeField.OnRevealClick(mousePos);
 			}
@@ -53,7 +53,7 @@ void Game::UpdateModel()
 		else if(evnt.GetType() == Mouse::Event::Type::RPress)
 		{
 			const Vei2 mousePos = evnt.GetPos();
-			if (memeField.GetRect(Vei2(0, 0)).Contains(mousePos))
+			if (memeField.GetRect().Contains(mousePos))
 			{
 				memeField.OnFlagClick(mousePos);
 			}
@@ -63,5 +63,5 @@ void Game::UpdateModel()
 
 void Game::ComposeFrame()
 {
-	memeField.DrawMap(Vei2(0, 0), gfx);
+	memeField.DrawMap(gfx);
 }

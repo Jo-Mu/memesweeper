@@ -28,16 +28,18 @@ private:
 		bool hasMeme = false;
 	};
 public:
-	Memefield(int nMemes);
+	Memefield(int nMemes, const Vei2& in_startPos);
 	Memefield::Tile& TileAt(const Vei2 mapPos);
 	const Memefield::Tile& TileAt(const Vei2 mapPos) const;
-	void DrawMap(const Vei2& startPos, Graphics& gfx ) const;
-	RectI GetRect(const Vei2& startPos) const;
+	void DrawMap(Graphics& gfx ) const;
+	RectI GetRect() const;
 	void OnRevealClick(const Vei2& screenPos);
 	void OnFlagClick(const Vei2& screenPos);
+private:
+	Vei2 ScreenToGrid(const Vei2& mousePos) const;
 private:
 	static constexpr int width = 16;
 	static constexpr int height = 16;
 	Tile field[width * height];
-	Vei2 ScreenToGrid(const Vei2& mousePos) const;
+	const Vei2 startPos;
 };

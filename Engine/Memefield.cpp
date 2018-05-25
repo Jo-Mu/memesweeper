@@ -75,7 +75,9 @@ bool Memefield::Tile::IsFlagged() const
 	return state == State::Flagged;
 }
 
-Memefield::Memefield(int nMemes)
+Memefield::Memefield(int nMemes, const Vei2& in_startPos)
+	:
+	startPos(in_startPos)
 {
 	assert(nMemes > 0 && nMemes < width * height);
 
@@ -108,11 +110,11 @@ const Memefield::Tile & Memefield::TileAt(const Vei2 mapPos) const
 	return field[(mapPos.y * height) + mapPos.x];
 }
 
-void Memefield::DrawMap(const Vei2 & startPos, Graphics & gfx) const
+void Memefield::DrawMap(Graphics & gfx) const
 {
 	assert(startPos.x >= 0 && startPos.y >= 0);
 
-	gfx.DrawRect(GetRect(startPos), SpriteCodex::baseColor);
+	gfx.DrawRect(GetRect(), SpriteCodex::baseColor);
 
 	for (Vei2 gridPos = {0, 0}; gridPos.y < height; gridPos.y++)
 	{
@@ -123,7 +125,7 @@ void Memefield::DrawMap(const Vei2 & startPos, Graphics & gfx) const
 	}
 }
 
-RectI Memefield::GetRect(const Vei2& startPos) const
+RectI Memefield::GetRect() const
 {
 	return RectI(startPos, width * SpriteCodex::tileSize, height * SpriteCodex::tileSize);
 }
@@ -154,5 +156,5 @@ void Memefield::OnFlagClick(const Vei2 & screenPos)
 
 Vei2 Memefield::ScreenToGrid(const Vei2 & mousePos) const
 {
-	return mousePos/SpriteCodex::tileSize;
+	return (mousePos - startPos)/SpriteCodex::tileSize;
 }

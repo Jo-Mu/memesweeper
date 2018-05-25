@@ -46,5 +46,7 @@ private:
 	static constexpr int height = 16;
 	Tile field[width * height];
 	const Vei2 startPos;
+	int nSafeTilesRemaining;
 	bool isGameOver = false;
+	bool isGameWon = false;
 };

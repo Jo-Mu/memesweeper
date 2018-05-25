@@ -126,6 +126,7 @@ Memefield::Memefield(int nMemes, const Vei2& in_startPos)
 {
 	assert(nMemes > 0 && nMemes < width * height);
 
+	nSafeTilesRemaining = (width * height) - nMemes;
 	std::random_device rd;
 	std::mt19937 rng(rd());
 	std::uniform_int_distribution<int> xDist(0, width - 1);
@@ -176,6 +177,12 @@ void Memefield::DrawMap(Graphics & gfx) const
 			TileAt(gridPos).Draw((gridPos * SpriteCodex::tileSize) + startPos, isGameOver, gfx);
 		}
 	}
+
+	if(isGameWon)
+	{
+		//Placeholder victory screen
+		gfx.DrawRect(GetRect(), Colors::Green);
+	}
 }
 
 RectI Memefield::GetRect() const
@@ -185,7 +192,7 @@ RectI Memefield::GetRect() const
 
 void Memefield::OnRevealClick(const Vei2 & screenPos)
 {
-	if (!isGameOver) 
+	if (!isGameOver && !isGameWon) 
 	{
 		const Vei2 gridPos = ScreenToGrid(screenPos);
 		assert(gridPos.x >= 0 && gridPos.x < width && gridPos.y >= 0 && gridPos.y < height);
@@ -198,13 +205,21 @@ void Memefield::OnRevealClick(const Vei2 & screenPos)
 			{
 				isGameOver = true;
 			}
+			else
+			{
+				nSafeTilesRemaining--;
+				if(nSafeTilesRemaining == 0)
+				{
+					isGameWon = true;
+				}
+			}
 		}
 	}
 }
 
 void Memefield::OnFlagClick(const Vei2 & screenPos)
 {
-	if (!isGameOver) 
+	if (!isGameOver && !isGameWon) 
 	{
 		const Vei2 gridPos = ScreenToGrid(screenPos);
 		assert(gridPos.x >= 0 && gridPos.x < width && gridPos.y >= 0 && gridPos.y < height);

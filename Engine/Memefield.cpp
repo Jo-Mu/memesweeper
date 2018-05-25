@@ -180,8 +180,8 @@ void Memefield::DrawMap(Graphics & gfx) const
 
 	if(isGameWon)
 	{
-		//Placeholder victory screen
-		gfx.DrawRect(GetRect(), Colors::Green);
+		SpriteCodex::DrawVictoryScreen(startPos + 
+			Vei2((width / 4) * SpriteCodex::tileSize, (height / 4) * SpriteCodex::tileSize), gfx);
 	}
 }
 

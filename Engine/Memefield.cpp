@@ -248,11 +248,11 @@ int Memefield::CountNeighborMemes(const Vei2 & gridPos) const
 	const int endX = std::min(width - 1, gridPos.x + 1);
 	const int endY = std::min(height - 1, gridPos.y + 1);
 
-	for(Vei2 tilePos = Vei2(startX, startY); tilePos.y <= endY; tilePos.y++)
+	for(Vei2 neighborPos = Vei2(startX, startY); neighborPos.y <= endY; neighborPos.y++)
 	{
-		for(tilePos.x = startX; tilePos.x <= endX; tilePos.x++)
+		for(neighborPos.x = startX; neighborPos.x <= endX; neighborPos.x++)
 		{
-			if(TileAt(tilePos).HasMeme())
+			if(TileAt(neighborPos).HasMeme())
 			{
 				memeCount++;
 			}

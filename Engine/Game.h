@@ -45,7 +45,7 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
-	int memes = 20;
+	int memes = 25;
 	Vei2 startPos = Vei2(260, 160);
 	Memefield memeField;
 };

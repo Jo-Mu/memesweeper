@@ -168,7 +168,12 @@ void Memefield::DrawMap(Graphics & gfx) const
 {
 	assert(startPos.x >= 0 && startPos.y >= 0);
 
-	gfx.DrawRect(GetRect(), SpriteCodex::baseColor);
+	RectI gridRect = GetRect();
+
+	gfx.DrawRect(gridRect.left - borderPadding, gridRect.top - borderPadding,
+		gridRect.right + borderPadding, gridRect.bottom + borderPadding, Colors::Cyan);
+
+	gfx.DrawRect(gridRect, SpriteCodex::baseColor);
 
 	for (Vei2 gridPos = {0, 0}; gridPos.y < height; gridPos.y++)
 	{

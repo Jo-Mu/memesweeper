@@ -49,4 +49,5 @@ private:
 	int nSafeTilesRemaining;
 	bool isGameOver = false;
 	bool isGameWon = false;
+	int borderPadding = 10;
 };

@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	memeField(15, Vei2(260,160))
+	memeField(20, Vei2(260,160))
 {
 }
 

@@ -25,7 +25,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	memeField(5)
+	memeField(15)
 {
 }
 
@@ -39,9 +39,25 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
-	if(wnd.mouse.LeftIsPressed())
+	while(!wnd.mouse.IsEmpty())
 	{
-		memeField.OnRevealClick(wnd.mouse.GetPos());
+		const auto evnt = wnd.mouse.Read();
+		if(evnt.GetType() == Mouse::Event::Type::LPress)
+		{
+			const Vei2 mousePos = evnt.GetPos();
+			if (memeField.GetRect(Vei2(0, 0)).Contains(mousePos))
+			{
+				memeField.OnRevealClick(mousePos);
+			}
+		}
+		else if(evnt.GetType() == Mouse::Event::Type::RPress)
+		{
+			const Vei2 mousePos = evnt.GetPos();
+			if (memeField.GetRect(Vei2(0, 0)).Contains(mousePos))
+			{
+				memeField.OnFlagClick(mousePos);
+			}
+		}
 	}
 }
 

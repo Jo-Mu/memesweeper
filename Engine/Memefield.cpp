@@ -56,6 +56,25 @@ bool Memefield::Tile::IsRevealed() const
 	return state == State::Revealed;
 }
 
+void Memefield::Tile::ToggleFlag()
+{
+	assert(!IsRevealed());
+
+	if (!IsFlagged()) 
+	{
+		state = State::Flagged;
+	}
+	else
+	{
+		state = State::Hidden;
+	}
+}
+
+bool Memefield::Tile::IsFlagged() const
+{
+	return state == State::Flagged;
+}
+
 Memefield::Memefield(int nMemes)
 {
 	assert(nMemes > 0 && nMemes < width * height);
@@ -118,6 +137,18 @@ void Memefield::OnRevealClick(const Vei2 & screenPos)
 	if(!tile.IsRevealed())
 	{
 		tile.Reveal();
+	}
+}
+
+void Memefield::OnFlagClick(const Vei2 & screenPos)
+{
+	const Vei2 gridPos = ScreenToGrid(screenPos);
+	assert(gridPos.x >= 0 && gridPos.x < width && gridPos.y >= 0 && gridPos.y < height);
+
+	Tile& tile = TileAt(gridPos);
+	if(!tile.IsRevealed())
+	{
+		tile.ToggleFlag();
 	}
 }
 

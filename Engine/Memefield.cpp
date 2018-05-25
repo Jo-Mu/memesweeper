@@ -30,7 +30,7 @@ void Memefield::Tile::Draw(const Vei2 & screenPos, Graphics & gfx) const
 		case State::Revealed:
 			if(!hasMeme)
 			{
-				SpriteCodex::DrawTile0(screenPos, gfx);
+				SpriteCodex::DrawTileNumber(nNeighborMemes, screenPos, gfx);
 			}
 			else
 			{
@@ -151,7 +151,7 @@ void Memefield::OnRevealClick(const Vei2 & screenPos)
 	assert(gridPos.x >= 0 && gridPos.x < width && gridPos.y >= 0 && gridPos.y < height);
 
 	Tile& tile = TileAt(gridPos);
-	if(!tile.IsRevealed())
+	if(!tile.IsRevealed() && !tile.IsFlagged())
 	{
 		tile.Reveal();
 	}

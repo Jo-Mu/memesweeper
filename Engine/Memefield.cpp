@@ -75,6 +75,13 @@ bool Memefield::Tile::IsFlagged() const
 	return state == State::Flagged;
 }
 
+void Memefield::Tile::SetNeighborMemeCount(int memeCount)
+{
+	assert(nNeighborMemes == -1);
+
+	nNeighborMemes = memeCount;
+}
+
 Memefield::Memefield(int nMemes, const Vei2& in_startPos)
 	:
 	startPos(in_startPos)
@@ -98,16 +105,24 @@ Memefield::Memefield(int nMemes, const Vei2& in_startPos)
 
 		TileAt(spawnPos).SpawnMeme();
 	}
+
+	for (Vei2 gridPos = { 0, 0 }; gridPos.y < height; gridPos.y++)
+	{
+		for (gridPos.x = 0; gridPos.x < width; gridPos.x++)
+		{
+			TileAt(gridPos).SetNeighborMemeCount(CountNeighborMemes(gridPos));
+		}
+	}
 }
 
-Memefield::Tile & Memefield::TileAt(const Vei2 mapPos)
+Memefield::Tile & Memefield::TileAt(const Vei2 gridPos)
 {
-	return field[(mapPos.y * height) + mapPos.x];
+	return field[(gridPos.y * height) + gridPos.x];
 }
 
-const Memefield::Tile & Memefield::TileAt(const Vei2 mapPos) const
+const Memefield::Tile & Memefield::TileAt(const Vei2 gridPos) const
 {
-	return field[(mapPos.y * height) + mapPos.x];
+	return field[(gridPos.y * height) + gridPos.x];
 }
 
 void Memefield::DrawMap(Graphics & gfx) const
@@ -157,4 +172,26 @@ void Memefield::OnFlagClick(const Vei2 & screenPos)
 Vei2 Memefield::ScreenToGrid(const Vei2 & mousePos) const
 {
 	return (mousePos - startPos)/SpriteCodex::tileSize;
+}
+
+int Memefield::CountNeighborMemes(const Vei2 & gridPos) const
+{
+	int memeCount = 0;
+	const int startX = std::max(0, gridPos.x - 1);
+	const int startY = std::max(0, gridPos.y - 1);
+	const int endX = std::min(width - 1, gridPos.x + 1);
+	const int endY = std::min(height - 1, gridPos.y + 1);
+
+	for(Vei2 tilePos = Vei2(startX, startY); tilePos.y <= endY; tilePos.y++)
+	{
+		for(tilePos.x = startX; tilePos.x <= endX; tilePos.x++)
+		{
+			if(TileAt(tilePos).HasMeme())
+			{
+				memeCount++;
+			}
+		}
+	}
+
+	return memeCount;
 }

@@ -120,6 +120,11 @@ void Memefield::Tile::SetNeighborMemeCount(int memeCount)
 	nNeighborMemes = memeCount;
 }
 
+bool Memefield::Tile::HasNoNeighborMemes() const
+{
+	return nNeighborMemes == 0;
+}
+
 Memefield::Memefield(int nMemes, const Vei2& in_startPos)
 	:
 	startPos(in_startPos)
@@ -195,24 +200,8 @@ void Memefield::OnRevealClick(const Vei2 & screenPos)
 	{
 		const Vei2 gridPos = ScreenToGrid(screenPos);
 		assert(gridPos.x >= 0 && gridPos.x < width && gridPos.y >= 0 && gridPos.y < height);
-
-		Tile& tile = TileAt(gridPos);
-		if (!tile.IsRevealed() && !tile.IsFlagged())
-		{
-			tile.Reveal();
-			if(tile.HasMeme())
-			{
-				isGameOver = true;
-			}
-			else
-			{
-				nSafeTilesRemaining--;
-				if(nSafeTilesRemaining == 0)
-				{
-					isGameWon = true;
-				}
-			}
-		}
+		
+		RevealTiles(gridPos);
 	}
 }
 
@@ -271,4 +260,40 @@ int Memefield::CountNeighborMemes(const Vei2 & gridPos) const
 	}
 
 	return memeCount;
+}
+
+void Memefield::RevealTiles(const Vei2 & gridPos)
+{
+	Tile& tile = TileAt(gridPos);
+	if (!tile.IsRevealed() && !tile.IsFlagged())
+	{
+		tile.Reveal();
+		if (tile.HasMeme())
+		{
+			isGameOver = true;
+		}
+		else
+		{
+			nSafeTilesRemaining--;
+			if (nSafeTilesRemaining == 0)
+			{
+				isGameWon = true;
+			}
+			else if (tile.HasNoNeighborMemes())
+			{
+				const int startX = std::max(0, gridPos.x - 1);
+				const int startY = std::max(0, gridPos.y - 1);
+				const int endX = std::min(width - 1, gridPos.x + 1);
+				const int endY = std::min(height - 1, gridPos.y + 1);
+
+				for (Vei2 neighborPos = Vei2(startX, startY); neighborPos.y <= endY; neighborPos.y++)
+				{
+					for (neighborPos.x = startX; neighborPos.x <= endX; neighborPos.x++)
+					{
+						RevealTiles(neighborPos);
+					}
+				}
+			}
+		}
+	}
 }
